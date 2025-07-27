@@ -1,0 +1,189 @@
+/* === RESET & GLOBAL === */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  overflow-x: hidden;
+  background-color: #000;
+  color: white;
+}
+
+.App {
+  text-align: center;
+}
+
+/* === ANIMATED BACKGROUNDS === */
+.soft-mode {
+  background: linear-gradient(-45deg, #d52d00, #ff9a56, #ffda56, #d52d00);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+}
+
+.nsfw-mode {
+  background: linear-gradient(-45deg, #2e003e, #57024e, #9d1b6c, #2e003e);
+  background-size: 400% 400%;
+  animation: gradientMove 20s ease infinite;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+}
+
+@keyframes gradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === MENU HEADER === */
+.menu {
+  text-align: center;
+  margin-top: 40px;
+  z-index: 2;
+  position: relative;
+}
+
+/* === BUTTONS === */
+.menu button {
+  margin: 0 10px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.menu button:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* === CARD CONTAINER === */
+.cards-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 30px;
+  margin-top: 40px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  z-index: 2;
+  position: relative;
+}
+
+/* === CARD STYLE === */
+.card {
+  width: 200px;
+  height: 320px;
+  perspective: 1000px;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.card:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.card-front img,
+.card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* === BACK OF CARD: Show quote with glow === */
+.card-back::after {
+  content: attr(data-quote);
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 6px;
+  font-size: 0.95rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 6px rgba(0, 170, 255, 0.8);
+}
+
+.nsfw-mode .card-back::after {
+  text-shadow: 0 0 6px rgba(255, 0, 170, 0.8);
+}
+
+/* === Card Rotation === */
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* === CARD GLOW === */
+.soft-mode .card-front,
+.soft-mode .card-back {
+  box-shadow: 0 0 30px 5px rgba(0, 170, 255, 0.9);
+}
+
+.nsfw-mode .card-front,
+.nsfw-mode .card-back {
+  box-shadow: 0 0 30px 5px rgba(255, 0, 170, 0.7);
+}
+
+/* === FLOATING HEARTS (NSFW) === */
+.hearts-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hearts-bg span {
+  position: absolute;
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.4);
+  animation: floatHeart 6s infinite ease-in-out;
+  user-select: none;
+}
+
+.hearts-bg span:nth-child(1) { left: 10%; top: 30%; animation-delay: 0s; }
+.hearts-bg span:nth-child(2) { left: 30%; top: 70%; animation-delay: 1s; }
+.hearts-bg span:nth-child(3) { left: 50%; top: 40%; animation-delay: 2s; }
+.hearts-bg span:nth-child(4) { left: 70%; top: 60%; animation-delay: 3s; }
+.hearts-bg span:nth-child(5) { left: 85%; top: 20%; animation-delay: 4s; }
+
+@keyframes floatHeart {
+  0%   { transform: translateY(0); opacity: 0.6; }
+  50%  { transform: translateY(-20px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0.6; }
+}

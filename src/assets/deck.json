@@ -1,0 +1,14 @@
+{
+  "cards": [
+    {
+      "name": "Carte 1",
+      "frontImg": "/images/carte1.png",
+      "backText": "Description carte 1"
+    },
+    {
+      "name": "Carte 2",
+      "frontImg": "/images/carte2.png",
+      "backText": "Description carte 2"
+    }
+  ]
+}

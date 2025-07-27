@@ -1,0 +1,98 @@
+/* fond animé en dégradé, full écran */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(270deg, #ff80ab, #b388ff, #80d8ff);
+  background-size: 600% 600%;
+  animation: gradientShift 20s ease infinite;
+  min-height: 100vh;
+  box-sizing: border-box;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* top bar */
+.top-bar {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.mode-label {
+  font-weight: 700;
+  font-size: 1.2rem;
+  align-self: center;
+}
+
+.btn-music, .btn-password {
+  background: rgba(255 255 255 / 0.25);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-music:hover, .btn-password:hover {
+  background: rgba(255 255 255 / 0.4);
+}
+
+.password-entry {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.password-entry input {
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.password-entry button {
+  padding: 0.4rem 0.8rem;
+  background: rgba(255 255 255 / 0.3);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.password-entry button:hover {
+  background: rgba(255 255 255 / 0.5);
+}
+
+/* grille des cartes responsive */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+  padding-bottom: 2rem;
+}

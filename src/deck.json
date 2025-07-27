@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Carte 1",
+    "image": "carte1.png",
+    "quote": "Le pouvoir est en toi."
+  },
+  {
+    "name": "Carte 2",
+    "image": "carte2.png",
+    "quote": "Chaque jour est une chance."
+  }
+]

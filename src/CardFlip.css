@@ -1,89 +1,34 @@
-.card-container {
-  perspective: 1000px;
-  margin: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+import React, { useState, useRef } from "react";
+import "./CardFlip.css";
+
+function CardFlip({ frontImage, backImage, quote, isNSFW, flipSound }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const audioRef = useRef(new Audio(flipSound));
+
+  const handleFlip = () => {
+    const audio = audioRef.current;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+    setIsFlipped(!isFlipped);
+  };
+
+  return (
+    <div className="card" onClick={handleFlip}>
+      <div className={`card-inner ${isFlipped ? "flipped" : ""}`}>
+        <div className="card-front">
+          <img src={frontImage} alt="Recto" />
+        </div>
+        <div className="card-back">
+          <img src={backImage} alt="Verso" />
+          <div
+            className={`quote ${isNSFW ? "quote-nsfw" : "quote-soft"}`}
+          >
+            {quote}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-.card {
-  width: 250px;
-  height: 350px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.8s;
-  cursor: pointer;
-}
-
-.card.flipped {
-  transform: rotateY(180deg);
-}
-
-.card-face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.card-front {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  animation: glowSoft 1.5s infinite alternate ease-in-out;
-}
-
-.card-back {
-  transform: rotateY(180deg);
-}
-
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.quote {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
-  background: rgba(0, 0, 0, 0.4);
-  color: white;
-  padding: 6px 10px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-}
-
-/* Glow mode soft */
-.safe-mode .card-front {
-  animation: glowSoft 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes glowSoft {
-  from {
-    box-shadow: 0 0 8px rgba(100, 200, 255, 0.4);
-  }
-  to {
-    box-shadow: 0 0 22px rgba(100, 200, 255, 0.9);
-  }
-}
-
-/* Glow mode NSFW */
-.nsfw-mode .card-front {
-  animation: glowHot 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes glowHot {
-  from {
-    box-shadow: 0 0 10px rgba(255, 80, 160, 0.4);
-  }
-  to {
-    box-shadow: 0 0 25px rgba(255, 80, 160, 1);
-  }
-}
+export default CardFlip;

@@ -1,19 +1,33 @@
-import React from "react";
-import "../App.css";
+import React, { useState, useRef } from "react";
+import "./CardFlip.css";
 
-const CardFlip = ({ frontImage, backImage, quote }) => {
+function CardFlip({ frontImage, backImage, quote, isNSFW, flipSound }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const audioRef = useRef(new Audio(flipSound));
+
+  const handleFlip = () => {
+    const audio = audioRef.current;
+    audio.currentTime = 0;
+    audio.play().catch((e) => {
+      console.warn("❌ Le son du flip ne s’est pas joué :", e);
+    });
+
+    setIsFlipped(!isFlipped);
+  };
+
   return (
-    <div className="card">
+    <div className={`card ${isFlipped ? "flipped" : ""}`} onClick={handleFlip}>
       <div className="card-inner">
         <div className="card-front">
-          <img src={frontImage} alt="Recto de la carte" />
+          <img src={frontImage} alt="Carte face" />
         </div>
-        <div className="card-back" data-quote={quote}>
-          <img src={backImage} alt="Verso de la carte" />
+        <div className="card-back">
+          <img src={backImage} alt="Dos de carte" />
+          <p className="quote">{quote}</p>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default CardFlip;

@@ -1,28 +1,35 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import CardFlip from "./components/CardFlip";
-import DreamDrop from "./components/DreamDrop"; // Ajout DreamDrop
+import DreamDrop from "./components/DreamDrop";
 import "./App.css";
+import flipSound from "/sounds/flip.mp3";
+import transitionSound from "/sounds/transition.mp3";
+import themeSoft from "/sounds/themeSoft.mp3";
 import themeNsw from "/sounds/themeNsw.mp3";
 
 function App() {
   const [isNSFWMode, setIsNSFWMode] = useState(false);
   const [showNSFW, setShowNSFW] = useState(false);
   const [musicPlaying, setMusicPlaying] = useState(false);
-  const audioRef = useRef(new Audio(themeNsw));
 
-  const toggleMusic = () => {
-    const audio = audioRef.current;
+  const audioSoftRef = useRef(new Audio(themeSoft));
+  const audioNSFWRef = useRef(new Audio(themeNsw));
+  const transitionAudio = useRef(new Audio(transitionSound));
+
+  useEffect(() => {
+    const audio = isNSFWMode ? audioNSFWRef.current : audioSoftRef.current;
+    audio.loop = true;
     if (musicPlaying) {
-      audio.pause();
-      audio.currentTime = 0;
+      audio.play().catch(() => {});
     } else {
-      audio.currentTime = 0;
-      audio.loop = true;
-      audio.play().catch((err) => {
-        console.warn("Audio playback failed:", err);
-      });
+      audio.pause();
     }
-    setMusicPlaying(!musicPlaying);
+    return () => audio.pause();
+  }, [musicPlaying, isNSFWMode]);
+
+  const playTransition = () => {
+    transitionAudio.current.currentTime = 0;
+    transitionAudio.current.play();
   };
 
   const handleNSFWAccess = () => {
@@ -30,6 +37,7 @@ function App() {
     if (pwd === "LeilaDreamX") {
       setShowNSFW(true);
       setIsNSFWMode(true);
+      playTransition();
     } else {
       alert("Mot de passe incorrect !");
     }
@@ -38,6 +46,11 @@ function App() {
   const handleBackToSoft = () => {
     setShowNSFW(false);
     setIsNSFWMode(false);
+    playTransition();
+  };
+
+  const toggleMusic = () => {
+    setMusicPlaying(!musicPlaying);
   };
 
   const cardsData = [
@@ -99,8 +112,9 @@ function App() {
   const displayedCards = showNSFW ? nsfwCardsData : cardsData;
 
   return (
-    <div className={showNSFW ? "nsfw-mode App" : "soft-mode App"}>
+    <div className={`App ${isNSFWMode ? "nsfw-mode" : "soft-mode"}`}>
       <h1>{showNSFW ? "Rêve Interdit ✦" : "Rêve Doux ✦"}</h1>
+
       <div className="menu">
         {!showNSFW ? (
           <button onClick={handleNSFWAccess}>Mode NSFW 🔓</button>
@@ -111,20 +125,21 @@ function App() {
           {musicPlaying ? "⏸ Couper Musique" : "▶️ Lecture Musique"}
         </button>
       </div>
-      <div className="cards-container">
+
+      <div className="card-container">
         {displayedCards.map((card, index) => (
           <CardFlip
             key={index}
             frontImage={card.frontImage}
             backImage={card.backImage}
             quote={card.quote}
-            isNSFW={showNSFW}
+            isNSFW={isNSFWMode}
+            flipSound={flipSound}
           />
         ))}
       </div>
 
-      {/* Fond de mots flottants 💫 */}
-      <DreamDrop isNSFW={showNSFW} />
+      <DreamDrop isNSFW={isNSFWMode} />
     </div>
   );
 }

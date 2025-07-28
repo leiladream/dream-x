@@ -79,13 +79,26 @@ body {
   width: 200px;
   height: 320px;
   perspective: 1000px;
-  opacity: 0;
   animation: fadeIn 1s ease forwards;
+  transform: scale(0.98);
+  opacity: 0;
 }
 
+/* Patch spécifique pour la première carte */
+.card:first-child {
+  animation-delay: 0.2s;
+  background-color: transparent;
+}
+
+/* Animation avec scale douce */
 @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
   to {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -112,11 +125,13 @@ body {
   overflow: hidden;
 }
 
+/* Image des cartes */
 .card-front img,
 .card-back img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background-color: transparent !important;
 }
 
 /* === BACK OF CARD: Show quote with glow === */

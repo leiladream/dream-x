@@ -1,27 +1,34 @@
-import React, { useState } from "react";
-import "./Card.css";
+import React, { useState, useRef } from "react";
+import "./CardFlip.css";
 
-export default function Card({ text, image }) {
+function CardFlip({ frontImage, backImage, quote, flipSound }) {
   const [flipped, setFlipped] = useState(false);
+  const audioRef = useRef(new Audio(flipSound));
 
   const handleFlip = () => {
     setFlipped(!flipped);
-
-    // Son au flip
-    const flipSound = new Audio("/audio/flip.mp3");
-    flipSound.play().catch((e) => console.warn("Son non joué :", e));
+    audioRef.current.currentTime = 0;
+    audioRef.current.play().catch(() => {});
   };
 
   return (
-    <div className="card" onClick={handleFlip}>
-      <div className={`card-inner ${flipped ? "flipped" : ""}`}>
-        <div className="card-face card-front">
-          <img src={image} alt="card front" className="card-img" />
+    <div className="flip-card" onClick={handleFlip}>
+      <div className={`flip-card-inner ${flipped ? "flipped" : ""}`}>
+        <div className="flip-card-face flip-card-front">
+          <img src={frontImage} alt="Face" />
+          <div className="quote-container">
+            <p className="quote">{quote}</p>
+          </div>
         </div>
-        <div className="card-face card-back">
-          <p>{text}</p>
+        <div className="flip-card-face flip-card-back">
+          <img src={backImage} alt="Dos" />
+          <div className="quote-container">
+            <p className="quote">{quote}</p>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default CardFlip;
